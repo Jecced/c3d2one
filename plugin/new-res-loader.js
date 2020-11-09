@@ -71,4 +71,8 @@ cc.loader.addDownloadHandlers({
             }
         )
     },
+    bin: function (item, callback) {
+        var arr = base64DecToArr(window.res[item.url])
+        callback(null, arr)
+    }
 })
