@@ -1,4 +1,4 @@
-package mix
+package engine
 
 import (
 	"fmt"
@@ -10,18 +10,20 @@ import (
 )
 
 var (
-	outDir = ""
+	out     = ""
+	content *string
 )
 
-func EngineMix(dir string, html *string) {
-	outDir = dir
+func Mix(dir string, html *string) {
+	out = dir
+	content = html
 
-	register := GetAllSystemRegister(outDir)
-	InsertRegisterJs(register, html)
+	register := GetAllSystemRegister(out)
+	InsertRegisterJs(register, content)
 
-	InsertImportMap(html)
+	InsertImportMap(content)
 
-	FindAndMixScript(html)
+	FindAndMixScript(content)
 	FindAndMixLink(html)
 }
 
@@ -49,14 +51,14 @@ func GetAllSystemRegister(dir string) []string {
 
 func InsertRegisterJs(list []string, html *string) {
 	for _, i2 := range list {
-		i2 = strings.Replace(i2, outDir+ak.PS, "", -1)
+		i2 = strings.Replace(i2, out+ak.PS, "", -1)
 		i2 = strings.Replace(i2, "\\", "/", -1)
 		insert(html, i2)
 	}
 }
 
 func insert(html *string, file string) {
-	jsFile := outDir + ak.PS + file
+	jsFile := out + ak.PS + file
 	content, _ := fileutil.ReadText(jsFile)
 
 	st := strings.Index(content, "(")
@@ -73,7 +75,7 @@ func insert(html *string, file string) {
 
 // 插入import-map.json到html内
 func InsertImportMap(html *string) {
-	file := outDir + ak.PS + "src/import-map.json"
+	file := out + ak.PS + "src/import-map.json"
 	text, _ := fileutil.ReadText(file)
 	insert := "<script> var importMapJson=" + text + "</script>\n"
 	strutil.InsertString(html, insert, "<!-- JSON IMPORT-MAP -->")
@@ -90,7 +92,7 @@ func FindAndMixScript(html *string) {
 
 func ReplaceScriptBlock(html *string, script string) {
 	src := strutil.MatchStringFirst(script, "src=\"", "\"", false)
-	path := outDir + ak.PS + src
+	path := out + ak.PS + src
 	content, _ := fileutil.ReadText(path)
 	insert := fmt.Sprintf(
 		"\n<script>\n%s\n</script>\n",
@@ -112,7 +114,7 @@ func FindAndMixLink(html *string) {
 
 func ReplaceStyleBlock(html *string, script string) {
 	src := strutil.MatchStringFirst(script, "href=\"", "\"", false)
-	path := outDir + ak.PS + src
+	path := out + ak.PS + src
 	content, _ := fileutil.ReadText(path)
 	insert := fmt.Sprintf(
 		"\n<style>\n%s\n</style>\n",

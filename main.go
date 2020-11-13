@@ -1,7 +1,8 @@
 package main
 
 import (
-	"c3d2one/mix"
+	"c3d2one/mix/engine"
+	"c3d2one/mix/res"
 	"fmt"
 	"github.com/Jecced/go-tools/src/ak"
 	"github.com/Jecced/go-tools/src/fileutil"
@@ -18,15 +19,17 @@ func main() {
 	fileutil.ClearDir(outDir)
 	fmt.Println("文件夹拷贝", mobileDir, outDir)
 	fileutil.DirCopy(mobileDir, outDir)
-	fmt.Println("替换文件")
+	fmt.Println("替换template模板文件")
 	fileutil.DirCopy("template", outDir)
+	fmt.Println("增加plugin插件脚本")
+	fileutil.DirCopy("plugin", outDir)
 	htmlContent, err := fileutil.ReadText(htmlFile)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	mix.EngineMix(outDir, &htmlContent)
-
+	engine.Mix(outDir, &htmlContent)
+	res.Mix(outDir, &htmlContent)
 	fileutil.WriteText(htmlContent, htmlFile)
 	fileutil.DelEmptyDir(outDir)
 }
