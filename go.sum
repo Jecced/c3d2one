@@ -1,2 +1,12 @@
 github.com/Jecced/go-tools v0.0.0-20201106112332-f7733300362e h1:R22ViWB3b0mFv3Lt6cFBcz16joB4q2ZY7P8ooM3Eq0s=
 github.com/Jecced/go-tools v0.0.0-20201106112332-f7733300362e/go.mod h1:dOCl03rXEW/KNBlhmKbDcpKHFtaNkrKF1vlFZCXUg5w=
+github.com/Jecced/go-tools v0.0.0-20201113012359-55f714b5be79 h1:K9KpX0Zxs607J3UqoRO1ZLIyKg6Dhlunqy85ll+4Plg=
+github.com/Jecced/go-tools v0.0.0-20201113012359-55f714b5be79/go.mod h1:dOCl03rXEW/KNBlhmKbDcpKHFtaNkrKF1vlFZCXUg5w=
+github.com/Jecced/go-tools v0.0.0-20201113022430-0f5498984888 h1:yPV188hFXS9VqowxBzhEpcPkfjTGRxLLf4EcpaOiSyE=
+github.com/Jecced/go-tools v0.0.0-20201113022430-0f5498984888/go.mod h1:dOCl03rXEW/KNBlhmKbDcpKHFtaNkrKF1vlFZCXUg5w=
+github.com/Jecced/go-tools v0.0.0-20201113023716-ee87c7490af3 h1:9eToCzy60qDsy0eDqa5ZTeig+1P294fpXnNMyucQkk4=
+github.com/Jecced/go-tools v0.0.0-20201113023716-ee87c7490af3/go.mod h1:dOCl03rXEW/KNBlhmKbDcpKHFtaNkrKF1vlFZCXUg5w=
+github.com/Jecced/go-tools v0.0.0-20201113030139-7e24cf85d622 h1:6nfoAkvcPYndcfMw7oRQuVj5KLQJ32jO5Fb0DzVu3ko=
+github.com/Jecced/go-tools v0.0.0-20201113030139-7e24cf85d622/go.mod h1:dOCl03rXEW/KNBlhmKbDcpKHFtaNkrKF1vlFZCXUg5w=
+github.com/Jecced/go-tools v0.0.0-20201113032819-80b00b54c3ed h1:cDKswYQBHcZCE72YF9mRlA4OEimZBJvPnzYdSC2imHI=
+github.com/Jecced/go-tools v0.0.0-20201113032819-80b00b54c3ed/go.mod h1:dOCl03rXEW/KNBlhmKbDcpKHFtaNkrKF1vlFZCXUg5w=
