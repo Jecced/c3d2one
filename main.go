@@ -21,8 +21,8 @@ func main() {
 	fileutil.DirCopy(mobileDir, outDir)
 	fmt.Println("替换template模板文件")
 	fileutil.DirCopy("template", outDir)
-	fmt.Println("增加plugin插件脚本")
-	fileutil.DirCopy("plugin", outDir)
+	//fmt.Println("增加plugin插件脚本")
+	//fileutil.DirCopy("plugin", outDir)
 	htmlContent, err := fileutil.ReadText(htmlFile)
 	if err != nil {
 		fmt.Println(err)
