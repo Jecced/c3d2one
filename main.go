@@ -9,7 +9,8 @@ import (
 )
 
 var (
-	mobileDir = "/Users/ankang/develop/projects/git/test/cocos_demo/c3d_demo_01/build/web-mobile"
+	//mobileDir = "/Users/ankang/develop/projects/git/test/cocos_demo/c3d_demo_01/build/web-mobile"
+	mobileDir = "/Users/ankang/Downloads/web-mobile"
 	outDir    = "/Library/WebServer/Documents/game/test"
 	htmlFile  = outDir + ak.PS + "index.html"
 )
@@ -21,8 +22,8 @@ func main() {
 	fileutil.DirCopy(mobileDir, outDir)
 	fmt.Println("替换template模板文件")
 	fileutil.DirCopy("template", outDir)
-	//fmt.Println("增加plugin插件脚本")
-	//fileutil.DirCopy("plugin", outDir)
+	fmt.Println("增加plugin插件脚本")
+	fileutil.DirCopy("plugin", outDir)
 	htmlContent, err := fileutil.ReadText(htmlFile)
 	if err != nil {
 		fmt.Println(err)

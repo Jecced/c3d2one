@@ -29,64 +29,102 @@ function base64DecToArr(sBase64, nBlockSize) {
     }
     return aBytes
 }
+function uint6ToB64 (nUint6) {
 
-let ccc = System["import"]('cc')
-ccc.then(function(engine){
-    console.log(engine)
-    engine.log(1111111)
+    return nUint6 < 26 ?
+        nUint6 + 65
+        : nUint6 < 52 ?
+            nUint6 + 71
+            : nUint6 < 62 ?
+                nUint6 - 4
+                : nUint6 === 62 ?
+                    43
+                    : nUint6 === 63 ?
+                        47
+                        :
+                        65;
 
-    /**
-     * 修改部分资源的载入方式,可以根据项目中实际用到的资源进行修改
-     * - [注意] window.res 是自己定义的,名称可以修改
-     */
-    console.log("注册")
-    engine.loader.addDownloadHandlers({
-        json: function (item, callback) {
-            if(item.url.startsWith("./")){
-                item.url = item.url.substring(2)
-            }
-            console.log(item)
-            console.log(JSON.stringify(window.res[item.url]))
-            callback(null, JSON.stringify(window.res[item.url]))
-        },
-        plist: function (item, callback) {
-            callback(null, window.res[item.url])
-        },
-        png: function (item, callback) {
-            var img = new Image()
-            img.src = "data:image/png;base64," + window.res[item.url]   // 注意需要给base64编码添加前缀
-            callback(null, img)
-        },
-        jpg: function (item, callback) {
-            var img = new Image()
-            img.src = "data:image/jpeg;base64," + window.res[item.url]
-            callback(null, img)
-        },
-        webp: function (item, callback) {
-            var img = new Image()
-            img.src = "data:image/webp;base64," + window.res[item.url]
-            callback(null, img)
-        },
-        mp3: function (item, callback) {
-            // 只支持以webAudio形式播放的声音
-            // 将base64编码的声音文件转化为ArrayBuffer
-            cc.sys.__audioSupport.context.decodeAudioData(
-                base64DecToArr(window.res[item.url]).buffer,
-                // success
-                function (buffer) {
-                    callback(null, buffer)
-                },
-                // fail
-                function (buffer) {
-                    callback(new Error("mp3-res-fail"), null)
-                }
-            )
-        },
-        bin: function (item, callback) {
-            var arr = base64DecToArr(window.res[item.url])
-            callback(null, arr)
+}
+
+function base64EncArr (arraybuffer) {
+
+    let aBytes = new Uint8Array(arraybuffer.buffer)
+
+    var eqLen = (3 - (aBytes.length % 3)) % 3, sB64Enc = "";
+
+    for (var nMod3, nLen = aBytes.length, nUint24 = 0, nIdx = 0; nIdx < nLen; nIdx++) {
+        nMod3 = nIdx % 3;
+        /* Uncomment the following line in order to split the output in lines 76-character long: */
+        /*
+        if (nIdx > 0 && (nIdx * 4 / 3) % 76 === 0) { sB64Enc += "\r\n"; }
+        */
+        nUint24 |= aBytes[nIdx] << (16 >>> nMod3 & 24);
+        if (nMod3 === 2 || aBytes.length - nIdx === 1) {
+            sB64Enc += String.fromCharCode(uint6ToB64(nUint24 >>> 18 & 63), uint6ToB64(nUint24 >>> 12 & 63), uint6ToB64(nUint24 >>> 6 & 63), uint6ToB64(nUint24 & 63));
+            nUint24 = 0;
         }
+    }
+
+    return  eqLen === 0 ?
+        sB64Enc
+        :
+        sB64Enc.substring(0, sB64Enc.length - eqLen) + (eqLen === 1 ? "=" : "==");
+
+}
+
+function regLoading(){
+    let ccc = System["import"]('cc')
+    ccc.then(function(engine) {
+        engine.loader.addDownloadHandlers({
+            json: function (item, callback) {
+                if (item.url.startsWith("./")) {
+                    item.url = item.url.substring(2)
+                }
+                callback(null, JSON.stringify(window.res[item.url]))
+            },
+            bin: function (item, callback) {
+                var arr = base64DecToArr(window.res[item.url])
+                callback(null, arr)
+            },
+            plist: function (item, callback) {
+                callback(null, window.res[item.url])
+            },
+            png: function (item, callback) {
+                var img = new Image()
+                img.src = "data:image/png;base64," + window.res[item.url]   // 注意需要给base64编码添加前缀
+                img.onload = function (){
+                    callback(null, img)
+                }
+            },
+            jpg: function (item, callback) {
+                var img = new Image()
+                img.src = "data:image/jpeg;base64," + window.res[item.url]
+                img.onload = function (){
+                    callback(null, img)
+                }
+            },
+            webp: function (item, callback) {
+                var img = new Image()
+                img.src = "data:image/webp;base64," + window.res[item.url]
+                img.onload = function (){
+                    callback(null, img)
+                }
+            },
+            mp3: function (item, callback) {
+                // 只支持以webAudio形式播放的声音
+                // 将base64编码的声音文件转化为ArrayBuffer
+                cc.sys.__audioSupport.context.decodeAudioData(
+                    base64DecToArr(window.res[item.url]).buffer,
+                    // success
+                    function (buffer) {
+                        callback(null, buffer)
+                    },
+                    // fail
+                    function (buffer) {
+                        callback(new Error("mp3-res-fail"), null)
+                    }
+                )
+            },
+        })
     })
-
-})
-
+}

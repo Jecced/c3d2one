@@ -31,6 +31,8 @@ func Mix(dir string, html *string) {
 	bin := []string{
 		".bin",
 		".png",
+		".jpg",
+		".mp3",
 	}
 
 	for _, s := range bin {
